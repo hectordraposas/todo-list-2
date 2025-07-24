@@ -5,6 +5,7 @@ const initialState = {
   todos: [],
   todoInput: "",
   editId: null,
+  selectAll: false,
 };
 
 const reducer = (state, action) => {
@@ -37,6 +38,16 @@ const reducer = (state, action) => {
         ...state,
         editId: action.payload.id,
         todoInput: action.payload.editValue,
+      };
+
+    case "selectAll":
+      return {
+        ...state,
+        selectAll: !state.selectAll,
+        todos: state.todos.map((todo) => ({
+          ...todo,
+          isDone: !state.selectAll,
+        })),
       };
   }
 };

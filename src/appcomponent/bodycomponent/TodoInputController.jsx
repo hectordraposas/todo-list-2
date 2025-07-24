@@ -2,7 +2,7 @@ import ListItemComponent from "./ListItemComponent";
 
 const TodoInputController = ({ dispatch, state }) => {
   return (
-    <div className="relative">
+    <div className="">
       <p>Enter Todo:</p>
       <input
         className="p-2 w-full border-white border-2 mt-2"
@@ -12,7 +12,6 @@ const TodoInputController = ({ dispatch, state }) => {
           dispatch({ type: "todoValue", payload: e.target.value })
         }
       />
-
       <div className="flex justify-between items-center">
         <button className="bg-red-500 p-2 mt-2 mb-5 min-w-3/12 rounded-sm cursor-pointer">
           Clear List
@@ -27,6 +26,19 @@ const TodoInputController = ({ dispatch, state }) => {
           {state.editId ? "Update" : "Save"}
         </button>
       </div>
+      {state.todos.length > 0 && (
+        <span className="flex items-center gap-1">
+          <input
+            type="checkbox"
+            name="checkall"
+            id="chkall"
+            value={state.selectAll}
+            onChange={() => dispatch({ type: "selectAll" })}
+          />
+          <span>Select all</span>
+        </span>
+      )}
+
       <ListItemComponent
         todos={state.todos}
         state={state}
