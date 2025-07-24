@@ -20,14 +20,18 @@ const TodoInputController = ({ dispatch, state }) => {
           className={`bg-green-500 p-2 mt-2 mb-5 min-w-2/12 rounded-sm ${
             state.todoInput ? "cursor-pointer" : "cursor-not-allowed"
           }`}
-          onClick={() => dispatch({ type: "saveTodo" })}
+          onClick={() =>
+            dispatch({
+              type: state.mode === "update" ? "updateTodo" : "saveTodo",
+            })
+          }
           disabled={state.todoInput ? false : true}
         >
           {state.editId ? "Update" : "Save"}
         </button>
       </div>
       {state.todos.length > 0 && (
-        <span className="flex items-center gap-1">
+        <span className="flex items-center gap-1 ml-1.5">
           <input
             type="checkbox"
             name="checkall"
