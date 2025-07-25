@@ -1,3 +1,4 @@
+import { ACTION } from "../../js/actionTypes";
 import ListItemComponent from "./ListItemComponent";
 
 const TodoInputController = ({ dispatch, state }) => {
@@ -7,13 +8,19 @@ const TodoInputController = ({ dispatch, state }) => {
       <input
         className="p-2 w-full border-white border-2 mt-2"
         type="text"
-        value={state.todoInput || ""}
+        value={state.todoInput}
         onChange={(e) =>
-          dispatch({ type: "todoValue", payload: e.target.value })
+          dispatch({ type: ACTION.TODO_INPUT_VALUE, payload: e.target.value })
         }
       />
       <div className="flex justify-between items-center">
-        <button className="bg-red-500 p-2 mt-2 mb-5 min-w-3/12 rounded-sm cursor-pointer">
+        <button
+          className={`bg-red-500 p-2 mt-2 mb-5 min-w-3/12 rounded-sm  ${
+            state.todos.length > 0 ? "cursor-pointer" : "cursor-not-allowed "
+          }`}
+          disabled={!state.todos.length > 0}
+          onClick={() => dispatch({ type: ACTION.TODO_CLEAR_DATA })}
+        >
           Clear List
         </button>
         <button
@@ -22,12 +29,13 @@ const TodoInputController = ({ dispatch, state }) => {
           }`}
           onClick={() =>
             dispatch({
-              type: state.mode === "update" ? "updateTodo" : "saveTodo",
+              type:
+                state.mode === "update" ? ACTION.TODO_UPDATE : ACTION.TODO_SAVE,
             })
           }
           disabled={state.todoInput ? false : true}
         >
-          {state.editId ? "Update" : "Save"}
+          {state.editingId ? "Update" : "Save"}
         </button>
       </div>
       {state.todos.length > 0 && (
@@ -37,7 +45,7 @@ const TodoInputController = ({ dispatch, state }) => {
             name="checkall"
             id="chkall"
             value={state.selectAll}
-            onChange={() => dispatch({ type: "selectAll" })}
+            onChange={() => dispatch({ type: ACTION.TODO_SELECT_ALL })}
           />
           <span>Select all</span>
         </span>

@@ -1,3 +1,5 @@
+import { ACTION } from "../../js/actionTypes";
+
 const ListItemComponent = ({ todos, state, dispatch }) => {
   return (
     <ul>
@@ -34,7 +36,7 @@ const ListItemComponent = ({ todos, state, dispatch }) => {
               className="cursor-pointer bg-amber-500 p-1 rounded-sm min-w-20"
               onClick={() =>
                 dispatch({
-                  type: "editID",
+                  type: ACTION.TODO_START_EDIT,
                   payload: {
                     id: item.id === state.editId ? null : item.id,
                     editValue: item.id === state.editId ? null : item.todoName,
@@ -44,7 +46,12 @@ const ListItemComponent = ({ todos, state, dispatch }) => {
             >
               {state.editId === item.id ? "Cancel" : "Edit"}
             </button>
-            <button className="cursor-pointer bg-red-500 p-1 rounded-sm min-w-20">
+            <button
+              className="cursor-pointer bg-red-500 p-1 rounded-sm min-w-20"
+              onClick={() =>
+                dispatch({ type: ACTION.TODO_DELETE, payload: item.id })
+              }
+            >
               Delete
             </button>
           </span>

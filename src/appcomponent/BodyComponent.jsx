@@ -1,74 +1,14 @@
-import { act, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import TodoInputController from "./bodycomponent/TodoInputController";
-
-const initialState = {
-  todos: [],
-  todoInput: "",
-  editId: null,
-  selectAll: false,
-  mode: "save",
-};
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "todoValue":
-      return { ...state, todoInput: action.payload };
-    case "saveTodo":
-      const newID = Date.now();
-
-      if (!state.todoInput) return state;
-
-      return {
-        ...state,
-        todos: [
-          ...state.todos,
-          { id: newID, todoName: state.todoInput, isDone: false },
-        ],
-        todoInput: "",
-      };
-
-    case "updateTodo":
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          state.editId === todo.id
-            ? { ...todo, todoName: state.todoInput }
-            : todo
-        ),
-        editId: null,
-        mode: "save",
-        todoInput: "",
-      };
-
-    case "changeCheckState":
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          todo.id === action.payload ? { ...todo, isDone: !todo.isDone } : todo
-        ),
-      };
-    case "editID":
-      return {
-        ...state,
-        editId: action.payload.id,
-        todoInput: action.payload.editValue,
-        mode: "update",
-      };
-
-    case "selectAll":
-      return {
-        ...state,
-        selectAll: !state.selectAll,
-        todos: state.todos.map((todo) => ({
-          ...todo,
-          isDone: !state.selectAll,
-        })),
-      };
-  }
-};
+import { initialState, reducer } from "../js/reducer";
+import { ACTION } from "../js/actionTypes";
 
 const BodyComponent = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    localStorage.setItem("todo2", JSON.stringify(state.todos));
+  }, [state.todos]);
 
   return (
     <div className="md:w-[80%] w-[98%] h-auto bg-white/30 mx-auto md:p-5 p-2 rounded-sm text-white border-t-5 border-t-amber-300">
