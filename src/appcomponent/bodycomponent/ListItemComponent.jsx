@@ -1,6 +1,13 @@
 import { ACTION } from "../../js/actionTypes";
 
 const ListItemComponent = ({ todos, state, dispatch }) => {
+  const handleItemClick = (id) => {
+    dispatch({
+      type: ACTION.TODO_SELECT_DATA,
+      payload: id,
+    });
+  };
+
   return (
     <ul>
       {todos.map((item) => (
@@ -13,20 +20,16 @@ const ListItemComponent = ({ todos, state, dispatch }) => {
               <input
                 type="checkbox"
                 checked={item.isDone}
-                onChange={(e) =>
-                  dispatch({
-                    type: "changeCheckState",
-                    payload: item.id,
-                  })
-                }
+                onChange={() => handleItemClick(item.id)}
                 name=""
                 id=""
               />
             </span>
             <span
-              className={`text-slate-900 ${
+              className={`text-slate-900 cursor-pointer ${
                 item.isDone ? "line-through decoration-red-500" : ""
               }`}
+              onClick={() => handleItemClick(item.id)}
             >
               {item.todoName}
             </span>
@@ -38,13 +41,13 @@ const ListItemComponent = ({ todos, state, dispatch }) => {
                 dispatch({
                   type: ACTION.TODO_START_EDIT,
                   payload: {
-                    id: item.id === state.editId ? null : item.id,
-                    editValue: item.id === state.editId ? null : item.todoName,
+                    id: item.id === state.editingId ? "" : item.id,
+                    editValue: item.id === state.editingId ? "" : item.todoName,
                   },
                 })
               }
             >
-              {state.editId === item.id ? "Cancel" : "Edit"}
+              {state.editingId === item.id ? "Cancel" : "Edit"}
             </button>
             <button
               className="cursor-pointer bg-red-500 p-1 rounded-sm min-w-20"

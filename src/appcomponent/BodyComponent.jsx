@@ -1,7 +1,6 @@
 import { useEffect, useReducer } from "react";
 import TodoInputController from "./bodycomponent/TodoInputController";
 import { initialState, reducer } from "../js/reducer";
-import { ACTION } from "../js/actionTypes";
 
 const BodyComponent = () => {
   const [state, dispatch] = useReducer(reducer, initialState);

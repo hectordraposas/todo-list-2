@@ -69,5 +69,15 @@ export const reducer = (state, action) => {
       const askClear = confirm("Are you sure you want to clear all the data?");
       if (!askClear) return state;
       return { ...state, todos: [] };
+
+    case ACTION.TODO_SELECT_DATA:
+      return {
+        ...state,
+        todos: state.todos.map((todo) =>
+          todo.id === action.payload ? { ...todo, isDone: !todo.isDone } : todo
+        ),
+      };
+    default:
+      return state;
   }
 };
